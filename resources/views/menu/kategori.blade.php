@@ -1,13 +1,8 @@
 @auth
 @extends('component.layout')
-
-@section('title','Data Transaksi - E-Laundry')
+@section('title','Kategori - E-Laundry')
 @section('content')
-	<!-- main content -->
-@endsection
-
-@section('script')
-	<!-- script -->
+    
 @endsection
 
 @endauth

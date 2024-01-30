@@ -14,15 +14,17 @@ return new class extends Migration
         Schema::create('transaksi', function (Blueprint $table) {
             $table->id();
             $table->string('invoice');
+            $table->string('user_id');
             $table->string('tgl_transaksi');
             $table->enum('status_order',['Proses','Selesai'])->default('Proses');
-            $table->enum('status_payment',['Belum','Sudah']);
             $table->integer('harga_id');
             $table->string('kg');
             $table->string('hari');
             $table->string('harga');
             $table->string('harga_akhir')->nullable();
-            $table->string('tgl_ambil')->nullable();
+            $table->string('tgl');
+            $table->string('bulan');
+            $table->string('tahun');
             $table->timestamps();
         });
     }

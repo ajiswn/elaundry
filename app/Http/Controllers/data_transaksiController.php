@@ -11,8 +11,7 @@ class data_transaksiController extends Controller
      */
     public function index()
     {
-        $data['title'] = 'Data Transaksi - E-Laundry';
-        return view('menu.data_transaksi', $data);
+        return view('menu.data_transaksi');
     }
 
     /**

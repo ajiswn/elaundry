@@ -1,19 +1,24 @@
 @auth
 @extends('component.layout')
-
+@php
+    $currentDateTime = new DateTime();
+    $formatter = new IntlDateFormatter('id_ID', IntlDateFormatter::FULL, IntlDateFormatter::FULL, 'Asia/Jakarta');
+    $formatter->setPattern('EEEE, dd MMMM y, HH:mm:ss');
+@endphp
+@section('title','Dasbor - E-Laundry')
 @section('content')
 	<div class="laundry_dataku">
 		<div class="laundry_data" style="width:40rem">
-			<p class="welcome">Selamat Datang, {{ Auth::user()->nama }}</p>
-			<p class="tgl" style="font-weight:300" >{{date('l, d F Y')}}, {{date('H:i:s')}}</p>
+			<p class="welcome">Selamat Datang 👋🏻, {{ Auth::user()->nama }}</p>
+			<p class="tgl" style="font-weight:300" >{{ $formatter->format($currentDateTime) }}</p>
 		</div>
 		<div class="laundry_data">
-			<h5>120</h5>
+			<h5>{{$masuk}}</h5>
 			<img src="gambar/laundry_masuk.svg" alt="">
 			<p>Laundry Proses</p>
 		</div>
 		<div class="laundry_data">
-			<h5>210</h5>
+			<h5>{{$selesai}}</h5>
 			<img src="gambar/laundry_selesai.svg" alt="">
 			<p>Laundry Selesai</p>
 		</div>
@@ -37,14 +42,8 @@ var $label_color = '#e7eef7';
 var $purple = '#6f6cec';
 var $strok_color = '#000000';
 var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-var dataNilaiB = "10";
-var dataNilai = "10";
-var dataTanggal = "10";
-var values = dataNilai.split(',').map(Number);
-var labels = dataTanggal.split(',');
-var valuesB = dataNilaiB.split(',').map(Number);
 
-{{-- Bar perbulan --}}
+//Bar perbulan
 var optionsB = {
 	chart: {
 		height: 300,
@@ -76,7 +75,7 @@ var optionsB = {
 	},
 	series: [{
 		name: "Laundry Masuk",
-		data: valuesB
+		data: [{{$_nilaiB}}]
 	}],
 	xaxis: {
 		labels: {
@@ -105,11 +104,11 @@ var optionsB = {
 	},
 };
 
-{{-- Menampilkan grafik line per bulan --}}
+// {{-- Menampilkan grafik line per bulan --}}
 var chartBulan = new ApexCharts(document.querySelector("#data-bulan"), optionsB);
 chartBulan.render();
 
-{{-- Bar Data Hari --}}
+// {{-- Bar Data Hari --}}
 var options = {
 	chart: {
 		height: 300,
@@ -141,7 +140,7 @@ var options = {
 	},
 	series: [{
 		name: "Laundry Masuk",
-		data: values
+		data: [{{$_nilai}}]
 	}],
 	xaxis: {
 		labels: {
@@ -150,7 +149,7 @@ var options = {
 		axisTicks: {
 			show: false,
 		},
-		categories: labels,
+		categories: [{{$_tanggal}}],
 		axisBorder: {
 			show: false,
 		},
@@ -170,7 +169,7 @@ var options = {
 	},
 };
 
-{{-- Menampilkan grafik line per hari --}}
+// {{-- Menampilkan grafik line per hari --}}
 var chartHari = new ApexCharts(document.querySelector("#data-hari"), options);
 chartHari.render();
 </script>

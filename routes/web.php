@@ -44,3 +44,6 @@ Route::resource('riwayat_transaksi', riwayat_transaksiController::class);
 
 use App\Http\Controllers\laporan_keuanganController;
 Route::resource('laporan_keuangan', laporan_keuanganController::class);
+
+use App\Http\Controllers\KategoriController;
+Route::resource('kategori', KategoriController::class);

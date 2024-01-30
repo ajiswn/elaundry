@@ -28,4 +28,10 @@
             <span class="description">Laporan Keuangan</span>
         </div>
     </a>
+    <a href="{{ route('kategori.index') }}">
+        <div class="list-menu{{ request()->is('kategori') ? '-active' : '' }}">
+            <img src="/gambar/kategori{{ request()->is('kategori') ? '_a' : '' }}.svg" alt="" class="icon">
+            <span class="description">Kategori</span>
+        </div>
+    </a>
 </div>
