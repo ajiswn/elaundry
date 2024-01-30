@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('kg');
             $table->string('hari');
             $table->string('harga');
+            $table->enum('jenis_pesanan', ['Regular','Expres'])
             $table->string('harga_akhir')->nullable();
             $table->string('tgl');
             $table->string('bulan');

@@ -4,6 +4,10 @@
 @section('title','Data Transaksi - E-Laundry')
 @section('content')
 	<!-- main content -->
+	<p>yaikss</p>
+	<div class="popbox">
+		<p>ssssss</p>
+	</div>
 @endsection
 
 @section('script')

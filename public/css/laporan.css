@@ -1,0 +1,39 @@
+.main-content {
+  display: flex;
+  flex-direction: column;
+  margin-left: 19rem;
+  margin-top: 75px; 
+  height: auto;
+}
+.table_dt th  {
+  background-color: rgba(0, 0, 0, 0.10);
+  border : 2px solid rgba(0, 0, 0, 0.10);
+  font-size: 14px;
+  padding: 1rem;
+  text-align: left;
+  width: 12%;
+  font-weight: 500;
+}
+
+.table_dt td {
+  font-size: 14px;
+  font-weight: 350;       
+  padding: 1rem;
+  border : 2px solid rgba(0, 0, 0, 0.10);
+}
+
+.table_dt {
+  border-style: none;
+  border-collapse: collapse;
+}
+
+.popbox {
+    margin: 2rem 24px 0 2rem;
+    width: 73rem;
+    height: auto;
+    background: white; 
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.10); 
+    border-radius: .5rem;
+    box-sizing: border-box;
+    padding: 1.5rem;
+}

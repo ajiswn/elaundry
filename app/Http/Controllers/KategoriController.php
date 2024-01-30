@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\transaksi;
 
 class KategoriController extends Controller
 {
@@ -11,7 +12,8 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        return view('menu.kategori');
+        $data = transaksi::all();
+        return view('menu.kategori', ['dataTransaksi'=>$data]);
     }
 
     /**
