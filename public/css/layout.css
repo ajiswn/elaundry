@@ -2,21 +2,21 @@
 
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
-    scroll-behavior: auto;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  scroll-behavior: auto;
   }
 
 body {
-    background-color: #F1F1F1;
+  background-color: #F1F1F1;
 }
 
 .container {
-    display: flex;
-    min-height: 100vh;
-    position: relative;
+  display: flex;
+  min-height: 100vh;
+  position: relative;
 }
 
 .sidebar {
@@ -113,18 +113,18 @@ body {
 }
 
 header {
-    position: fixed;
-    top: 1rem;
-    right: 2rem;
-    left: 21rem;
-    /* width: 100%; */
-	height: 4rem;
-    background-color: white;
-	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.10); 
-	border-radius: 10px;
-    box-sizing: border-box;
-    padding: 0.9rem ;
-    z-index: 100;
+  position: fixed;
+  top: 1rem;
+  right: .95rem;
+  left: 21rem;
+  /* width: 100%; */
+  height: 4rem;
+  background-color: white;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.10); 
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 0.9rem ;
+  z-index: 100;
 }
 
 header .icon-header {
@@ -146,9 +146,11 @@ header img:hover {
 }
 
 .main-content {
-    position: relative;
-    margin-left: 19rem;
-    margin-top: 75px;  
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-left: 19rem;
+  margin-top: 75px; 
 }
 
 .main-content .welcome {

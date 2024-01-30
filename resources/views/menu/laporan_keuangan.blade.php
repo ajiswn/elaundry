@@ -1,6 +1,6 @@
 @auth
 @extends('component.layout')
-
+@section('title','Laporan Keuangan - E-Laundry')
 @section('content')
 	<!-- main content -->
 @endsection

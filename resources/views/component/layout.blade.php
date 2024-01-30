@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', $title)</title>
+    <title>@yield('title')</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/css/layout.css">
     <link rel="stylesheet" href="/css/bantuan.css">
@@ -21,7 +21,7 @@
             @include('component.navbar')   
         </div>
         @include('component.header')
-        <div class="main-content">
+        <div class="main-content" style="{{ request()->is('dasbor') ? 'margin-top:50px' : '' }}">
 
 
             <!--content--->
@@ -32,7 +32,7 @@
 
 
 
-            <footer>Create at 2024;&copy; KEL7.
+            <footer style="{{ request()->is('dasbor') ? 'position:fixed' : '' }}">Create at 2024;&copy; KEL7.
                 <p></p>
             </footer>
         </div>

@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\elaundry;
-class riwayat_transaksiController extends Controller
+
+class KategoriController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('menu.riwayat_transaksi');
+        return view('menu.kategori');
     }
 
     /**
