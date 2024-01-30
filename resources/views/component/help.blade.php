@@ -1,70 +1,23 @@
-<?php
-session_start();
-
-if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
-
-?>
-
+@auth
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bantuan</title>
+    <title>Bantuan - E-Laundry</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="bantuan.css">
+    <link rel="stylesheet" href="/css/bantuan.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.44.0/apexcharts.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.44.0/apexcharts.min.css">
     <link rel="icon" href="gambar/favicon.png">
 </head>
 <body>
-    <?php
-        include "proses_dasbor.php";
-    ?>
     <div class="container">
         <div class="sidebar">
-            <div class="header">
-                <div class="logolaundry">
-                    <img src="gambar/logo_dasbor.svg" alt="">
-                </div>
-            </div>
-            <div class="main">
-                <a href="dasbor.php">
-                    <div class="list-menu">
-                        <img src="gambar/dasbor_hitam.svg" alt="" class="icon">
-                        <span class="description">Dasbor</span>
-                    </div>
-                </a>
-                <a href="data_transaksi.php">
-                    <div class="list-menu">
-                        <img src="gambar/data_transaksi.svg" alt="" class="icon">
-                        <span class="description">Data Transaksi</span>
-                    </div>
-                </a>
-                <a href="riwayat_transaksi.php">
-                    <div class="list-menu">
-                        <img src="gambar/riwayat_transaksi.svg" alt="" class="icon">
-                        <span class="description">Riwayat Transaksi</span>
-                    </div>
-                </a>
-                <a href="laporan_keuangan.php">
-                    <div class="list-menu">
-                        <img src="gambar/laporan_keuangan.svg" alt="" class="icon">
-                        <span class="description">Laporan Keuangan</span>
-                    </div>
-                </a>
-            </div>
+            @include('component.navbar')
         </div>
-        <div class="wrap-header">
-            <header>
-                <div class="icon-header">
-                    <a href="bantuan.php" title="Bantuan"><img src="gambar/bantuan.svg"></a>
-                    <a href="mailto:e.laundry.contact@gmail.com" title="Hubungi Kami"><img src="gambar/hubungi_kami.svg"></a>
-                    <a href="#" onclick="openKeluarPopup();" title="Keluar"><img src="gambar/keluar.svg"></a>
-                </div>
-            </header>
-        </div>
+        @include('component.header')
         <div class="main-content">
             <div class="wrap-content">
                 <h1>Bantuan</h1>
@@ -136,7 +89,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
     <div class="modal" id="keluar">
         <div class="keluarku">
             <p>Anda yakin ingin keluar?</p>
-            <a href="keluar.php"><button class="simpan">Ya</button></a>
+            <a href="{{route('logout')}}"><button class="simpan">Ya</button></a>
             <button class="close" id="tidak">Tidak</button>
         </div>
     </div>
@@ -155,10 +108,10 @@ function openKeluarPopup() {
 
 </body>
 </html>
-
-<?php
-}else{
-    header("Location:index.php");
-    exit();
-}
-?>
+@endauth
+@guest
+    @php
+        header("Location: " . route('front'));
+        exit();
+    @endphp
+@endguest
