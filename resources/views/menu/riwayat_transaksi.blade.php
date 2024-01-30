@@ -1,4 +1,5 @@
-@include('component.layout')
+@auth
+@extends('component.layout')
 
 @section('content')
 	<!-- main content -->
@@ -7,3 +8,11 @@
 @section('script')
 	<!-- script -->
 @endsection
+
+@endauth
+@guest
+    @php
+        header("Location: " . route('front'));
+        exit();
+    @endphp
+@endguest

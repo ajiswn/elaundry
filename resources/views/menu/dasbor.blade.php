@@ -1,3 +1,4 @@
+@auth
 @extends('component.layout')
 
 @section('content')
@@ -174,3 +175,11 @@ var chartHari = new ApexCharts(document.querySelector("#data-hari"), options);
 chartHari.render();
 </script>
 @endsection
+	
+@endauth
+@guest
+    @php
+        header("Location: " . route('front'));
+        exit();
+    @endphp
+@endguest
