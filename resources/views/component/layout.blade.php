@@ -68,6 +68,7 @@
 </body>
 </html>
 @endauth
+
 @guest
     @php
         header("Location: " . route('front'));
