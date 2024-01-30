@@ -11,7 +11,8 @@ class laporan_keuanganController extends Controller
      */
     public function index()
     {
-        return view('menu.laporan_keuangan');
+        $data['title'] = 'Laporan Keuangan - E-Laundry';
+        return view('menu.laporan_keuangan', $data);
     }
 
     /**

@@ -11,7 +11,8 @@ class riwayat_transaksiController extends Controller
      */
     public function index()
     {
-        return view('menu.riwayat_transaksi');
+        $data['title'] = 'Riwayat Transaksi - E-Laundry';
+        return view('menu.riwayat_transaksi', $data);
     }
 
     /**
