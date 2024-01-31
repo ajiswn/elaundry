@@ -1,16 +1,11 @@
 @auth
 @extends('component.layout')
-@php
-    $currentDateTime = new DateTime();
-    $formatter = new IntlDateFormatter('id_ID', IntlDateFormatter::FULL, IntlDateFormatter::FULL, 'Asia/Jakarta');
-    $formatter->setPattern('EEEE, dd MMMM y, HH:mm:ss');
-@endphp
 @section('title','Dasbor - E-Laundry')
 @section('content')
 	<div class="laundry_dataku">
 		<div class="laundry_data" style="width:40rem">
 			<p class="welcome">Selamat Datang 👋🏻, {{ Auth::user()->nama }}</p>
-			<p class="tgl" style="font-weight:300" >{{ $formatter->format($currentDateTime) }}</p>
+			<p class="tgl" style="font-weight:300" >{{date('l, d F Y')}}, {{date('H:i:s')}}</p>
 		</div>
 		<div class="laundry_data">
 			<h5>{{$masuk}}</h5>
