@@ -23,8 +23,8 @@ class dasborController extends Controller
 
     public function index()
     {
-        $masuk = transaksi::whereIN('status_order',['Proses','Selesai'])->where('user_id',auth::user()->id)->count();
-        $selesai = transaksi::where('status_order','Selesai')->where('user_id',auth::user()->id)->count();
+        $masuk = transaksi::whereIN('status_order',['Proses','Selesai'])->where('user_id',auth::user()->user_id)->count();
+        $selesai = transaksi::where('status_order','Selesai')->where('user_id',auth::user()->user_id)->count();
 
         // Statistik Harian
         $hari = DB::table('transaksi')

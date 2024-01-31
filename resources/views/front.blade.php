@@ -25,7 +25,7 @@
         .btn {
             display: inline-block;
             padding: 10px 20px;
-            font-size: 18px;
+            font-size: 20px;
             text-decoration: none;
             color: #fff;
             background-color: #6F6CEC;
