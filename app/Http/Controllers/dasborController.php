@@ -36,7 +36,7 @@ class dasborController extends Controller
         ->  get();
 
         $tanggal = '';
-        $batas =  31;
+        $batas =  cal_days_in_month(CAL_GREGORIAN, date('n'), date('Y'));
         $nilai = '';
         for($_i=1; $_i <= $batas; $_i++){
             $tanggal = $tanggal . (string)$_i . ',';
