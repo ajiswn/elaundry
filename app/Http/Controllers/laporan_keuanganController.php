@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\elaundry;
+use App\Models\transaksi;
 class laporan_keuanganController extends Controller
 {
     /**
@@ -11,7 +12,8 @@ class laporan_keuanganController extends Controller
      */
     public function index()
     {
-        return view('menu.laporan_keuangan');
+        $data = transaksi::all();
+        return view('menu.laporan_keuangan', ['dataTransaksi'=>$data]);
     }
 
     /**
