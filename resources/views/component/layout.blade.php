@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/css/layout.css">
     {{-- <link rel="stylesheet" href="/css/bantuan.css"> --}}
     <link rel="stylesheet" href="/css/dasbor.css">
+    <link rel="stylesheet" href="/css/data_transaksi.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.44.0/apexcharts.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.44.0/apexcharts.min.css">
