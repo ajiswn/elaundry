@@ -1,7 +1,8 @@
-@auth
 @extends('component.layout')
+@section('style','/css/dasbor.css')
 @section('title','Dasbor - E-Laundry')
 @section('content')
+<br>
 	<div class="laundry_dataku">
 		<div class="laundry_data" style="width:40rem">
 			<p class="welcome">Selamat Datang 👋🏻, {{ Auth::user()->nama }}</p>
@@ -169,11 +170,3 @@ var chartHari = new ApexCharts(document.querySelector("#data-hari"), options);
 chartHari.render();
 </script>
 @endsection
-	
-@endauth
-@guest
-    @php
-        header("Location: " . route('front'));
-        exit();
-    @endphp
-@endguest
