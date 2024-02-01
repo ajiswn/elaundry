@@ -12,21 +12,22 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transaksi', function (Blueprint $table) {
-            $table->id('');
-            $table->string('no_pesanan');
-            $table->string('user_id');
+            $table->id();
+            $table->string('no_transaksi');
+            $table->unsignedBigInteger('user_id');
             $table->string('tgl_transaksi');
             $table->enum('status_order',['Proses','Selesai'])->default('Proses');
             $table->integer('harga_id');
             $table->string('kg');
             $table->string('hari');
             $table->string('harga');
-            $table->enum('jenis_pesanan', ['Regular','Expres'])
             $table->string('harga_akhir')->nullable();
             $table->string('tgl');
             $table->string('bulan');
             $table->string('tahun');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

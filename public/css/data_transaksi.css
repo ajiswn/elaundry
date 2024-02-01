@@ -116,7 +116,7 @@ body {
 header {
   position: fixed;
   top: 1rem;
-  right: .95rem;
+  right: 2rem;
   left: 21rem;
 height: 4rem;
   background-color: white;
@@ -216,6 +216,7 @@ td + .action {
 }
 
 .notif {
+  display: flex;
   position: relative;
   height: auto;
   background-color: #d4edda;

@@ -9,8 +9,18 @@ class User extends Authenticatabel
 {
     use HasFactory;
 
-    protected $table = 'tb_user';
-    protected $primaryKey = 'user_id';
+    protected $table = 'users';
+    protected $primaryKey = 'id';
 
     protected $fillable = ['nama', 'username', 'password'];
+
+    public function transaksi()
+    {
+      return $this->belongsTo(transaksi::class,'id','user_id');
+    }
+
+    public function kategori()
+    {
+      return $this->belongsTo(kategori::class,'id','user_id');
+    }
 }

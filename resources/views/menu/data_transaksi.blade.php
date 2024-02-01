@@ -1,5 +1,5 @@
 @php
-    use App\Models\transaksi;
+    use App\Models\Transaksi;
     setlocale(LC_TIME, 'id_ID');
     $transaksi = transaksi::where('status_order', 'Proses')->orderByDesc('tgl_transaksi')->orderByDesc('id')->get();
 @endphp

@@ -13,10 +13,11 @@ class UserController extends Controller
         $data['title'] = 'Daftar';
         return view('user/register', $data);
     }
+    
     public function register_action(Request $request) {
         $request->validate([
             'nama'=> 'required',
-            'username'=> 'required|unique:tb_user',
+            'username'=> 'required|unique:users',
             'password'=> 'required',
             'confirm_pass'=> 'required|same:password',
         ]);
@@ -46,24 +47,6 @@ class UserController extends Controller
             return redirect()->intended('/dasbor');
         }
         return back()->withErrors(['username' => 'Username atau Password salah!']);
-    }
-
-    public function password() {
-        $data['title'] = 'Ganti Password';
-        return view('user/password', $data);
-    }
-
-    public function password_action(Request $request) {
-        $request->validate([
-            'username'=> 'required',
-            'password'=> 'required'
-        ]);
-
-        if(Auth::attempt(['username' => $request->username,'password' => $request->password])) {
-            $request->session()->regenerate();
-            return redirect()->intended('/home');
-        }
-        return back()->withErrors('password', 'Username atau Password salah!');
     }
 
     public function logout(Request $request) {

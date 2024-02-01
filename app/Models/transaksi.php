@@ -9,5 +9,15 @@ class transaksi extends Model
 {
     use HasFactory;
     protected $table = 'transaksi';
-    protected $fillable = ['no_pesanan','tgl_transaksi', 'status_order', 'harga_id', 'kg', 'hari', 'harga', 'jenis_pesanan', 'harga_akhir'];
+    protected $fillable = ['user_id','no_transaksi','tgl_transaksi', 'status_order', 'harga_id', 'kg', 'hari', 'harga', 'tgl','bulan', 'tahun', 'harga_akhir'];
+
+    public function price()
+    {
+      return $this->belongsTo(kategori::class,'harga_id','id');
+    }
+
+    public function user()
+    {
+      return $this->belongsTo(User::class,'user_id','id');
+    }
 }
