@@ -3,84 +3,46 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\kategori;
 use Illuminate\Support\Facades\Auth;
-use App\Models\transaksi;
-use App\Models\User;
-use carbon\carbon;
-use Illuminate\Support\Facades\DB;
+use Session;
+
 class KategoriController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+    }
+
     public function index()
     {
-        $data = transaksi::all();
-        $dataTransaksi = transaksi::all();
-        date_default_timezone_set('Asia/Jakarta');
-        $tanggal = date('Ymd');
-        $max_transaksi = transaksi::max('id'); // Menggunakan Eloquent untuk mendapatkan nilai maksimum
-
-        $jumlah_transaksi = $max_transaksi === null ? 1 : $max_transaksi + 1;
-
-        $no_transaksi = $tanggal . str_pad($jumlah_transaksi, 3, '0', STR_PAD_LEFT);
-        return view('menu.kategori', ['dataTransaksi'=>$data], compact('no_transaksi'));
+      $data = kategori::with('harga')->where('user_id',Auth::user()->id)
+      ->orderBy('id','DESC')->get();
+      return view('menu.kategori',['kategori'=>$data]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-
-
-        return view('menu.kategori', compact('dataTransaksi', 'no_transaksi'));
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        try {
-            DB::beginTransaction();
-            $order = new transaksi();
-            $order->no_pesanan      = $request->no_pesanan;
-            $order->tgl_transaksi   = Carbon::now()->parse($order->tgl_transaksi)->format('d-m-Y');
-            $order->harga_id        = $request->harga_id;
-            $order->user_id         = Auth::user()->id;
-            $order->hari            = $request->hari;
-            $order->kg              = $request->kg;
-            $order->harga           = $request->harga;
-            $hitung                 = $order->kg * $order->harga;
-            $order->harga_akhir    = $hitung;
-            $order->tgl               = Carbon::now()->day;
-            $order->bulan             = Carbon::now()->month;
-            $order->tahun             = Carbon::now()->year;
-            $order->save();
+      $addharga = new kategori();
+      $addharga->user_id = Auth::user()->id;
+      $addharga->nama_kategori = $request->nama_kategori;
+      $addharga->harga = preg_replace('/[^A-Za-z0-9\-]/', '', $request->harga);// Remove special caracter
+      $addharga->hari = $request->hari;
+      $addharga->save();
 
-        DB::commit();
-        return redirec()->route('kategori.index');
-        }catch (ErrorException $e) {
-        DB::rollback();
-        }
+      Session::flash('success','Tambah Data Kategori Berhasil');
+      return redirect('kategori');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        $kategori = Kategori::find($id);
+        return response()->json($kategori);
     }
 
     /**
@@ -88,14 +50,21 @@ class KategoriController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        Kategori::find($id)->update([
+            'nama_kategori' => $request->nama_kategori,
+            'harga' => preg_replace('/[^A-Za-z0-9\-]/', '', $request->harga),
+            'hari' => $request->hari
+        ]);
+        
+      Session::flash('success','Edit Data Kategori Berhasil');
+      return redirect('kategori');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        Kategori::find($id)->delete();
+
+        Session::flash('success','Hapus Data Kategori Berhasil');
+        return redirect('kategori');
     }
 }

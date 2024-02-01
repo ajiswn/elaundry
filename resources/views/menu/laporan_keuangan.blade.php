@@ -2,8 +2,6 @@
 @extends('component.layout')
 @section('title','Laporan Keuangan - E-Laundry')
 @section('content')
-
-<div class="main-content">
 	<div class="popbox">
 		<table class="table_dt" cellspacing="0" width="100%">
 
@@ -16,8 +14,10 @@
 					
 					@if(!$dataTransaksi->isEmpty())
 					@foreach($dataTransaksi as $data)
+					<tr>
 					<td>{{ $data->tgl_transaksi }}</td>
 					<td>{{ $data->harga_akhir }}</td>
+					</tr>
 					@endforeach
 					@else
 
@@ -27,11 +27,6 @@
 
 		</table>
 	</div>
-
-
-</div>
-</div>
-</div>
 @endsection
 
 @section('script')

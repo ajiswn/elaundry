@@ -36,8 +36,8 @@ Route::get('help', function() {
 use App\Http\Controllers\dasborController;
 Route::resource('dasbor', dasborController::class);
 
-use App\Http\Controllers\data_transaksiController;
-Route::resource('data_transaksi', data_transaksiController::class);
+use App\Http\Controllers\TransaksiController;
+Route::resource('data_transaksi', TransaksiController::class);
 
 use App\Http\Controllers\riwayat_transaksiController;
 Route::resource('riwayat_transaksi', riwayat_transaksiController::class);
