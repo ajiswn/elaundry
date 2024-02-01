@@ -1,4 +1,3 @@
-@auth
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,8 +6,7 @@
     <title>@yield('title')</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/css/layout.css">
-    {{-- <link rel="stylesheet" href="/css/bantuan.css"> --}}
-    <link rel="stylesheet" href="/css/dasbor.css">
+    <link rel="stylesheet" href="@yield('style')">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.44.0/apexcharts.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.44.0/apexcharts.min.css">
@@ -37,14 +35,15 @@
             </footer>
         </div>
         <div class="modal" id="keluar">
-            <div class="keluarku">
-                <p>Anda yakin ingin keluar?</p>
+            <div class="keluarku" style="padding-top: 16px">
+                <p><b>{{ Auth::user()->nama }}</b>,<br>Anda yakin ingin keluar?</p>
                 <a href="{{route('logout')}}"><button class="simpan">Ya</button></a>
                 <button class="close" id="tidak">Tidak</button>
             </div>
         </div>
     </div>
 
+    @yield('modal')
     <!-- --script-- -->
     
     @yield('script')
@@ -67,11 +66,3 @@
 
 </body>
 </html>
-@endauth
-
-@guest
-    @php
-        header("Location: " . route('front'));
-        exit();
-    @endphp
-@endguest
