@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\transaksi;
-
+use App\Models\User;
+use carbon\carbon;
+use Illuminate\Support\Facades\DB;
 class KategoriController extends Controller
 {
     /**
@@ -13,7 +16,15 @@ class KategoriController extends Controller
     public function index()
     {
         $data = transaksi::all();
-        return view('menu.kategori', ['dataTransaksi'=>$data]);
+        $dataTransaksi = transaksi::all();
+        date_default_timezone_set('Asia/Jakarta');
+        $tanggal = date('Ymd');
+        $max_transaksi = transaksi::max('id'); // Menggunakan Eloquent untuk mendapatkan nilai maksimum
+
+        $jumlah_transaksi = $max_transaksi === null ? 1 : $max_transaksi + 1;
+
+        $no_transaksi = $tanggal . str_pad($jumlah_transaksi, 3, '0', STR_PAD_LEFT);
+        return view('menu.kategori', ['dataTransaksi'=>$data], compact('no_transaksi'));
     }
 
     /**
@@ -21,7 +32,10 @@ class KategoriController extends Controller
      */
     public function create()
     {
-        //
+
+
+        return view('menu.kategori', compact('dataTransaksi', 'no_transaksi'));
+
     }
 
     /**
@@ -29,7 +43,28 @@ class KategoriController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $order = new transaksi();
+            $order->no_pesanan      = $request->no_pesanan;
+            $order->tgl_transaksi   = Carbon::now()->parse($order->tgl_transaksi)->format('d-m-Y');
+            $order->harga_id        = $request->harga_id;
+            $order->user_id         = Auth::user()->id;
+            $order->hari            = $request->hari;
+            $order->kg              = $request->kg;
+            $order->harga           = $request->harga;
+            $hitung                 = $order->kg * $order->harga;
+            $order->harga_akhir    = $hitung;
+            $order->tgl               = Carbon::now()->day;
+            $order->bulan             = Carbon::now()->month;
+            $order->tahun             = Carbon::now()->year;
+            $order->save();
+
+        DB::commit();
+        return redirec()->route('kategori.index');
+        }catch (ErrorException $e) {
+        DB::rollback();
+        }
     }
 
     /**

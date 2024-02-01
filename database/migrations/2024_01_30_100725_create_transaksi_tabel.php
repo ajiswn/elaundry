@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transaksi', function (Blueprint $table) {
-            $table->id();
-            $table->string('invoice');
+            $table->id('');
+            $table->string('no_pesanan');
             $table->string('user_id');
             $table->string('tgl_transaksi');
             $table->enum('status_order',['Proses','Selesai'])->default('Proses');

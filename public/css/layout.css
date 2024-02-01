@@ -460,7 +460,7 @@ footer {
 }
 
 .popbox {
-    margin-left: 2rem;
+  position: relative;
     width: 73rem;
     height: auto;
     background: white; 
