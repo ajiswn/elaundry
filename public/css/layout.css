@@ -443,7 +443,7 @@ footer {
   font-size: 14px;
   padding: 1rem;
   text-align: left;
-  width: 12%;
+  width: auto;
   font-weight: 500;
 }
 
