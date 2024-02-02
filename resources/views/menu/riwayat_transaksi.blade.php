@@ -27,7 +27,7 @@
                         <td>{{ $data->customer }}</td>
                         <td>{{ $data->berat.' KG' }}</td>
                         <td>{{ $data->nama_kategori }}</td>
-                        <td>{{ "Rp" . number_format($data->harga_akhir, 0, ',', '.') }}</td>
+                        <td>{{ "Rp " . number_format($data->harga_akhir, 0, ',', '.') }}</td>
                     </tr>
                     <?php $no++; ?>
                 @endforeach

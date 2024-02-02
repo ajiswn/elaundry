@@ -30,9 +30,6 @@ class TransaksiController extends Controller
 
         // Nomor Form otomatis
         $newID = $number. Auth::user()->id .''.$y;
-        $tgl = date('d-M-Y');
-
-        $cek_harga = Kategori::where('user_id',Auth::user()->id)->first();
 
         return view('menu.data_transaksi', compact('newID','kategori','dataTransaksi'));
     }
@@ -60,16 +57,40 @@ class TransaksiController extends Controller
 
     public function edit(string $id)
     {
-        //
+        $transaksi = Transaksi::find($id);
+        return response()->json($transaksi);
     }
 
     public function update(Request $request, string $id)
     {
-        //
+        Transaksi::find($id)->update([
+            'customer'      => $request->customer,
+            'berat'         => $request->berat,
+            'nama_kategori' => $request->nama_kategori,
+            'harga'         => preg_replace('/[^A-Za-z0-9\-]/', '',$request->harga),
+            'harga_akhir'   => preg_replace('/[^A-Za-z0-9\-]/', '',$request->harga) * $request-> berat,
+            'hari'          => $request-> hari,
+        ]);
+         
+        Session::flash('success','Edit Data Transaksi Berhasil');
+        return redirect('data_transaksi');
     }
 
     public function destroy(string $id)
     {
-        //
+        Transaksi::find($id)->delete();
+
+        Session::flash('success','Hapus Data Transaksi Berhasil');
+        return redirect('data_transaksi');
+    }
+    
+    public function selesai(string $id)
+    {
+        Transaksi::find($id)->update([
+            'status_order' => "Selesai"
+        ]);
+
+        Session::flash('success','Selesaikan Data Transaksi Berhasil');
+        return redirect('data_transaksi');
     }
 }
