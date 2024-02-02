@@ -16,11 +16,11 @@ class User extends Authenticatabel
 
     public function transaksi()
     {
-      return $this->belongsTo(transaksi::class,'id','user_id');
+      return $this->belongsTo(Transaksi::class,'id','user_id');
     }
 
     public function kategori()
     {
-      return $this->belongsTo(kategori::class,'id','user_id');
+      return $this->belongsTo(Kategori::class,'id','user_id');
     }
 }

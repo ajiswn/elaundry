@@ -16,9 +16,10 @@ return new class extends Migration
             $table->string('no_transaksi');
             $table->unsignedBigInteger('user_id');
             $table->string('tgl_transaksi');
+            $table->string('customer');
             $table->enum('status_order',['Proses','Selesai'])->default('Proses');
-            $table->integer('harga_id');
-            $table->string('kg');
+            $table->string('nama_kategori');
+            $table->string('berat');
             $table->string('hari');
             $table->string('harga');
             $table->string('harga_akhir')->nullable();

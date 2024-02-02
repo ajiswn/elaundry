@@ -5,92 +5,69 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Transaksi;
+use App\Models\Kategori;
 use carbon\carbon;
-use Illuminate\Support\Facades\DB;
+use Session;
 class TransaksiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct()
+    {
+      $this->middleware('auth');
+
+    }
+    
     public function index()
     {
-        $data = Transaksi::all();
-        $dataTransaksi = Transaksi::all();
-        date_default_timezone_set('Asia/Jakarta');
-        $tanggal = date('Ymd');
-        $max_transaksi = Transaksi::max('id'); // Menggunakan Eloquent untuk mendapatkan nilai maksimum
+        $dataTransaksi = Transaksi::where('user_id',Auth::user()->id)
+            ->where('status_order', 'Proses')
+            ->orderBy('id','DESC')
+            ->get();
 
-        $jumlah_transaksi = $max_transaksi === null ? 1 : $max_transaksi + 1;
+        $kategori = Kategori::where('user_id',Auth::id())->get();
 
-        $no_transaksi = $tanggal . str_pad($jumlah_transaksi, 3, '0', STR_PAD_LEFT);
-        return view('menu.data_transaksi', ['dataTransaksi'=>$data], compact('no_transaksi'));
+        $y = date('Y');
+        $number = mt_rand(1000, 9999);
+
+        // Nomor Form otomatis
+        $newID = $number. Auth::user()->id .''.$y;
+        $tgl = date('d-M-Y');
+
+        $cek_harga = Kategori::where('user_id',Auth::user()->id)->first();
+
+        return view('menu.data_transaksi', compact('newID','kategori','dataTransaksi'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('menu.kategori', compact('dataTransaksi', 'no_transaksi'));
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        try {
-            DB::beginTransaction();
-            $order = new transaksi();
-            $order->no_pesanan      = $request->no_pesanan;
-            $order->tgl_transaksi   = Carbon::now()->parse($order->tgl_transaksi)->format('d-m-Y');
-            $order->harga_id        = $request->harga_id;
-            $order->user_id         = Auth::user()->id;
-            $order->hari            = $request->hari;
-            $order->kg              = $request->kg;
-            $order->harga           = $request->harga;
-            $hitung                 = $order->kg * $order->harga;
-            $order->harga_akhir     = $hitung;
-            $order->tgl             = Carbon::now()->day;
-            $order->bulan           = Carbon::now()->month;
-            $order->tahun           = Carbon::now()->year;
-            $order->save();
+        Transaksi::create([
+            'no_transaksi'  => $request-> no_transaksi,
+            'tgl_transaksi' => Carbon::now()->format('d-M-y'),
+            'user_id'       => Auth::user()->id,
+            'customer'      => $request-> customer,
+            'berat'         => $request-> berat,
+            'nama_kategori' => $request-> nama_kategori,
+            'harga'         => preg_replace('/[^A-Za-z0-9\-]/', '',$request->harga),
+            'harga_akhir'   => preg_replace('/[^A-Za-z0-9\-]/', '',$request->harga) * $request-> berat,
+            'hari'          => $request-> hari,
+            'tgl'           => Carbon::now()->day,
+            'bulan'         => Carbon::now()->month,
+            'tahun'         => Carbon::now()->year,
+        ]);
 
-        DB::commit();
-        return redirect()->route('kategori.index');
-        }catch (ErrorException $e) {
-        DB::rollback();
-        }
+        Session::flash('success','Tambah Data Transaksi Berhasil');
+        return redirect('data_transaksi');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         //

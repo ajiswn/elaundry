@@ -1,83 +1,127 @@
-@php
-    use App\Models\Transaksi;
-    setlocale(LC_TIME, 'id_ID');
-    $transaksi = transaksi::where('status_order', 'Proses')->orderByDesc('tgl_transaksi')->orderByDesc('id')->get();
-@endphp
-
-@auth
 @extends('component.layout')
-
 @section('title','Data Transaksi - E-Laundry')
 @section('content')
-	<!-- main content -->
-    @if(session('notif'))
-        {{ session('notif') }}
-        @php
-            session(['notif' => '']);
-        @endphp
-    @endif
-    <div class="popbox">
-        <button type="button" id="myBtn" class="tambah">
-            <img src="{{ asset('gambar/tambah.svg') }}">
-            <p>Tambah</p>
-        </button>
-        <table class="table_dt" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-                    <th>No Transaksi</th>
-                    <th>Berat (Kg)</th>
-                    <th>Jenis</th>
-                    <th>Harga</th>
-                    <th>Tanggal</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-            @forelse($transaksi as $data)
-                @php
-                    $harga_rupiah = "Rp" . number_format($data->harga, 0, ',', '.');
-                    $tanggal = date("d-M-Y", strtotime($data->tanggal));
-                @endphp
-                <tr>
-                    <td>{{ $data->no_pesanan }}</td>
-                    <td>{{ $data->berat }}</td>
-                    <td>{{ $data->jenis_pesanan }}</td>
-                    <td>{{ $harga_rupiah }}</td>
-                    <td>{{ $tanggal }}</td>
-                    <td class="action">
-                        <a onclick="openEditPopup({{ $data->no_pesanan }});" title="Edit">
-                            <button class="edit"><i class="fa-regular fa-pen-to-square"></i></button>
-                        </a>
-                        <button title="Hapus" class="btnHapus" onclick="openHapusPopup({{ $data->no_pesanan }}, '{{ $data->no_pesanan }}');">
-                            <i class="fa-regular fa-trash-can"></i>
-                        </button>
-                        <button title="Selesai" class="btnSelesai" onclick="openSelesaiPopup({{ $data->no_pesanan }}, '{{ $data->no_pesanan }}');">
-                            <i class="fa-regular fa-square-check"></i>
-                        </button>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td style="text-align:center;font-weight: 350;" colspan="6">Data tidak tersedia di tabel</td>
-                </tr>
-            @endforelse
-            </tbody>   
-        </table>
+{{-- Content Start --}}
+{{-- Notifikasi Start --}}
+@if ($message = Session::get('success'))
+    <div class="notif" id="notif">
+        {{$message}}
+        <button class="clsnotif"><i class="fa-solid fa-xmark"></i></button>
     </div>
+@endif
+{{-- Notifikasi End --}}
+
+{{-- PopBox Start --}}
+<div class="popbox">
+    <button type="button" id="myBtn" class="tambah">
+        <img src="gambar/tambah.svg">
+        <p>Tambah</p>   
+    </button>
+    <table class="table_dt" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>No Transaksi</th>
+                <th>Tgl Transaksi</th>
+                <th>Pelanggan</th>
+                <th>Berat</th>
+                <th>Kategori</th>
+                <th>Harga Total</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(!$dataTransaksi->isEmpty())
+                <?php $no=1; ?>
+                @foreach($dataTransaksi as $data)
+                    <tr>
+                        <td>{{$no}}</td>
+                        <td>{{ $data->no_transaksi }}</td>
+                        <td>{{ $data->tgl_transaksi }}</td>
+                        <td>{{ $data->customer }}</td>
+                        <td>{{ $data->berat.' KG' }}</td>
+                        <td>{{ $data->nama_kategori }}</td>
+                        <td>{{ "Rp" . number_format($data->harga_akhir, 0, ',', '.') }}</td>
+                        <td class="action" style="min-width: 12rem">
+                            <a onclick="openEditPopup({{ $data->id }});" title="Edit"><button class="edit"><i class="fa-regular fa-pen-to-square"></i></button></a> 
+                            <button title="Hapus" class="btnHapus" onclick="openHapusPopup({{ $data->id }}, '{{ $data->no_transaksi }}');"><i class="fa-regular fa-trash-can"></i></button>
+                            <button title="Selesai" class="btnSelesai" onclick="openSelesaiPopup({{ $data->id }}, '{{ $data->no_transaksi }}');">
+                                <i class="fa-regular fa-square-check"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <?php $no++; ?>
+                @endforeach
+                </tr>
+                @else
+                <tr>
+                    <td style="text-align:center;font-weight: 350;" colspan="8">Data tidak tersedia di tabel</td>
+                </tr>
+            @endif
+        </tbody>
+    </table>
+</div>
+{{-- Popbox End --}}
+
 
 <!-- Popup Tambah Start -->
 <div id="myModal" class="modal">
-    <div class="modal-content">
+    <div class="modal-content" style="height: 38rem">
         <p>Formulir Tambah Transaksi</p>
         <form class="ftambah" action="{{route('data_transaksi.store')}}" method="POST">
             @csrf
             <div class="form-box">
-                <label id="notrans">Nomor Transaksi</label><br>
-                <input type="text" name="no_pesanan" value=' ' readonly><br>
+                <label id="no_transaksi">Nomor Transaksi</label><br>
+                <input type="text" name="no_transaksi" value="{{$newID}}" readonly><br>
+            </div>
+            <div class="form-box">
+                <label id="customer">Nama Pelanggan</label><br>
+                <input type="text" name="customer" required><br>
             </div>
             <div class="form-box">
                 <label id="berat">Berat (KG)</label><br>
-                <input type="number" name="berat" placeholder="Berat (KG)" autocomplete="off"><br>
+                <input type="number" name="berat" placeholder="Berat (KG)" autocomplete="off" id="beratInput" onkeyup="updateHargaTotal()"><br>
+            </div>
+            <div class="form-box">
+                <label id="jenis">Kategori</label><br>
+                <select name="nama_kategori" id="kategoriSelect" required>
+                    <option value="" disabled selected hidden>-- Kategori --</option>
+                    @foreach($kategori as $jenis)
+                        <option value="{{$jenis->nama_kategori}}" data-harga="{{$jenis->harga}}" data-hari="{{$jenis->hari}}">{{$jenis->nama_kategori}}</option>
+                    @endforeach
+                </select><br>                    
+            </div>
+            <div class="form-box">
+                <label id="harga">Harga (Rp)/KG </label><br>
+                <input type="text" name="harga" id="hargaInput" placeholder="Harga (Rp)/KG" readonly><br>                    
+            </div>
+            <div class="form-box">
+                <label id="hari">Hari </label><br>
+                <input type="text" name="hari" id="hariInput" placeholder="Hari" readonly><br>                    
+            </div>
+            <div class="form-box">
+                <label id="harga_akhir">Harga Total (Rp)</label><br>
+                <input type="text" name="harga_akhir" id="hargaAkhir" placeholder="Harga Total" readonly><br>                    
+            </div>
+            <button type="submit" class="simpan" name="tblsubmit"><i class="fa-regular fa-floppy-disk"></i>  Tambah</button>
+            <button type="button" class="close"><i class="fa-solid fa-xmark"></i>  Batal</button> 
+        </form>
+    </div>
+</div>
+{{-- Popup Tambah End --}}
+
+<!-- Popup Edit Start -->
+<div id="myModalEdit" class="modal">
+    <div class="modal-content">
+    <p>Formulir Edit Transaksi</p>
+        <form class="fedit" action="prosesEdit.php" method="POST">
+            <div class="form-box">
+                <label id="notrans">Nomor Transaksi</label><br>
+                <input type="text" name="no_pesanan" readonly><br>
+            </div>
+            <div class="form-box">
+                <label id="berat">Berat (KG)</label><br>
+                <input type="number" name="berat" placeholder="Berat (KG)" autocomplete="off" id="beratInput"><br>
             </div>
             <div class="form-box">
                 <label id="jenis">Jenis Pesanan</label><br>
@@ -89,73 +133,28 @@
             </div>
             <div class="form-box">
                 <label id="harga">Harga (Rp) </label><br>
-                <input type="text" name="harga" placeholder="Harga (Rp)" autocomplete="off" onkeyup="formatRupiah(this)"><br>                    
+                <input type="text" name="harga" placeholder="Harga (Rp)" autocomplete="off"><br>                    
             </div>
             <div class="form-box">
                 <label id="tanggal">Tanggal Pesanan</label><br>
-                <input type="date" name="tanggal" placeholder="dd/mm/yyyy">
+                <input type="text" name="tanggal" placeholder="dd/mm/yyyy" onfocus="(this.type='date')">                    
             </div>
-            <button type="submit" class="simpan" name="tblsubmit"><i class="fa-regular fa-floppy-disk"></i>  Tambah</button>
+            <button type="submit" class="simpan" name="tblsubmit"><i class="fa-regular fa-floppy-disk"></i>  Simpan</button>
             <button type="button" class="close"><i class="fa-solid fa-xmark"></i>  Batal</button> 
         </form>
     </div>
 </div>
+<!-- Popup Edit End -->
 
-    <!-- Popup Edit Start -->
-    <div id="myModalEdit" class="modal">
-        <div class="modal-content">
-        <p>Formulir Edit Transaksi</p>
-            <form class="fedit" action="prosesEdit.php" method="POST">
-                <div class="form-box">
-                    <label id="notrans">Nomor Transaksi</label><br>
-                    <input type="text" name="no_pesanan" readonly><br>
-                </div>
-                <div class="form-box">
-                    <label id="berat">Berat (KG)</label><br>
-                    <input type="number" name="berat" placeholder="Berat (KG)" autocomplete="off"><br>
-                </div>
-                <div class="form-box">
-                    <label id="jenis">Jenis Pesanan</label><br>
-                    <select name="jenis_pesanan" required>
-                        <option value="" disabled selected hidden>-- Jenis Pesanan --</option>
-                        <option value="Express">Express</option>
-                        <option value="Regular">Regular</option>
-                    </select><br>                    
-                </div>
-                <div class="form-box">
-                    <label id="harga">Harga (Rp) </label><br>
-                    <input type="text" name="harga" placeholder="Harga (Rp)" onkeyup="formatRupiah(this)" autocomplete="off"><br>                    
-                </div>
-                <div class="form-box">
-                    <label id="tanggal">Tanggal Pesanan</label><br>
-                    <input type="text" name="tanggal" placeholder="dd/mm/yyyy" onfocus="(this.type='date')">                    
-                </div>
-                <button type="submit" class="simpan" name="tblsubmit"><i class="fa-regular fa-floppy-disk"></i>  Simpan</button>
-                <button type="button" class="close"><i class="fa-solid fa-xmark"></i>  Batal</button> 
-            </form>
-        </div>
+<!-- Popup Hapus Start -->
+<div class="modal" id="modalHapus">
+    <div class="keluarku" style="padding-top: 25px">
+        <p id="pesanHapus" style="font-size: 20px;">Anda yakin ingin menghapus data?</p>
+        <a id="hapusLink" href="#"><button class="simpan">Ya</button></a>
+        <button class="close" id="tidakHapus">Tidak</button>
     </div>
-    <!-- Popup Edit End -->
-
-    <!-- Popup Keluar Start -->
-    <div class="modal" id="modalKeluar">
-        <div class="keluarku">
-            <p>Anda yakin ingin keluar?</p>
-            <a href="keluar.php"><button class="simpan">Ya</button></a>
-            <button class="close" id="tidakKeluar">Tidak</button>
-        </div>
-    </div>
-    <!-- Popup Keluar End -->
-
-    <!-- Popup Hapus Start -->
-    <div class="modal" id="modalHapus">
-        <div class="keluarku" style="padding-top: 25px">
-            <p id="pesanHapus" style="font-size: 20px;">Anda yakin ingin menghapus data?</p>
-            <a id="hapusLink" href="#"><button class="simpan">Ya</button></a>
-            <button class="close" id="tidakHapus">Tidak</button>
-        </div>
-    </div>
-    <!-- Popup Hapus End -->
+</div>
+<!-- Popup Hapus End -->
     
     <!-- Popup Selesai Start -->
     <div class="modal" id="modalSelesai">
@@ -171,14 +170,28 @@
 @section('script')
 	<!-- script -->
 <script>
-//Konfirmasi Keluar
-var keluar = document.getElementById("modalKeluar");
-var tidak = document.getElementById("tidakKeluar");
-function openKeluarPopup() {
-    keluar.style.display = "flex";
-}
-tidak.onclick = function() {
-    keluar.style.display = "none";
+document.getElementById('kategoriSelect').addEventListener('change', function() {
+        var selectedOption = this.options[this.selectedIndex];
+
+        var beratValue = parseFloat(document.getElementById('beratInput').value);
+        var hargaValue = selectedOption.getAttribute('data-harga');
+        var hariValue = selectedOption.getAttribute('data-hari');
+        var hargaTotal = beratValue * hargaValue ||0;
+        // Set nilai otomatis pada input harga
+        document.getElementById('hargaInput').value = formatRupiah(hargaValue);
+        document.getElementById('hariInput').value = hariValue;
+        document.getElementById('hargaAkhir').value = formatRupiah(hargaTotal);
+});
+
+function updateHargaTotal() {
+    var beratValue = parseFloat(document.getElementById('beratInput').value) || 0;
+    var hargaInputValue = document.getElementById('hargaInput').value;
+
+    var hargaValue = parseFloat(hargaInputValue.replace('.', '')) || 0;
+
+    var hargaTotal = beratValue * hargaValue || 0;
+
+    document.getElementById('hargaAkhir').value = formatRupiah(hargaTotal);
 }
 
 //Popup Tambah
@@ -272,26 +285,8 @@ function openEditPopup(no_pesanan) {
 }
 
 //Merubah format harga
-function formatRupiah(input) {
-    // Mengambil nilai tanpa karakter non-digit
-    let nominal = input.value.replace(/\D/g, '');
-
-    // Memastikan nilai yang dimasukkan bukan karakter kosong atau non-digit
-    if (nominal !== "") {
-        // Menambahkan pemisah ribuan
-        nominal = parseInt(nominal, 10).toLocaleString('in-id');
-
-        // Menetapkan nilai yang sudah diformat kembali ke input
-        input.value = nominal;
-    }
+function formatRupiah(value) {
+    return parseInt(value, 10).toLocaleString('in-id');
 }
 </script>
 @endsection
-
-@endauth
-@guest
-    @php
-        header("Location: " . route('front'));
-        exit();
-    @endphp
-@endguest

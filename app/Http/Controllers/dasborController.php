@@ -10,17 +10,12 @@ use Illuminate\Support\Facades\Auth;
 
 class DasborController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-
     public function __construct()
     {
         $this->middleware('auth');
 
     }
  
-
     public function index()
     {
         $masuk = transaksi::whereIN('status_order',['Proses'])->where('user_id',auth::user()->id)->count();
