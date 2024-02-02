@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use App\Models\elaundry;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,23 +23,20 @@ Route::post('register', [UserController::class, 'register_action'])->name('regis
 Route::get('login', [UserController::class, 'login'])->name('login');
 Route::post('login', [UserController::class, 'login_action'])->name('login.action');
 
-Route::get('password', [UserController::class, 'password'])->name('password');
-Route::post('password', [UserController::class, 'password_action'])->name('password.action');
-
 Route::get('logout', [UserController::class, 'logout'])->name('logout');
 
 Route::get('help', function() {
     return view('component.help');
 })->name('help');
 
-use App\Http\Controllers\dasborController;
-Route::resource('dasbor', dasborController::class);
+use App\Http\Controllers\DasborController;
+Route::resource('dasbor', DasborController::class);
 
 use App\Http\Controllers\TransaksiController;
 Route::resource('data_transaksi', TransaksiController::class);
 
-use App\Http\Controllers\riwayat_transaksiController;
-Route::resource('riwayat_transaksi', riwayat_transaksiController::class);
+use App\Http\Controllers\Riwayat_transaksiController;
+Route::resource('riwayat_transaksi', Riwayat_transaksiController::class);
 
 use App\Http\Controllers\laporan_keuanganController;
 Route::resource('laporan_keuangan', laporan_keuanganController::class);

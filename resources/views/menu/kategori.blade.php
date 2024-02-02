@@ -19,7 +19,7 @@
             <tr>
                 <th>No</th>
                 <th>Nama Kategori</th>
-                <th>Harga/KG</th>
+                <th>Harga (Rp)/KG</th>
                 <th>Hari</th>
                 <th>Aksi</th>
             </tr>
@@ -28,14 +28,10 @@
             @if(!$kategori->isEmpty())
                 <?php $no=1; ?>
                 @foreach($kategori as $data)
-                @php
-                    $harga_rupiah = "Rp" . number_format($data->harga, 0, ',', '.');
-                    $tanggal = date("d-M-Y", strtotime($data->tanggal));
-                @endphp
                     <tr>
                         <td>{{$no}}</td>
                         <td>{{ $data->nama_kategori }}</td>
-                        <td>{{ $harga_rupiah }}</td>
+                        <td>{{ $harga_rupiah = "Rp " . number_format($data->harga, 0, ',', '.') }}</td>
                         <td>{{ $data->hari }}</td>
                         <td class="action">
                             <a onclick="openEditPopup({{ $data->id }});" title="Edit"><button class="edit"><i class="fa-regular fa-pen-to-square"></i></button></a> 
@@ -68,8 +64,8 @@
                 <input type="text" name="nama_kategori" placeholder="Nama Kategori" required><br>
             </div>
             <div class="form-box">
-                <label id="harga">Harga (Rp) </label><br>
-                <input type="text" name="harga" placeholder="Harga (Rp)" onkeyup="formatRupiah(this)" required><br>                    
+                <label id="harga">Harga (Rp)/KG</label><br>
+                <input type="text" name="harga" placeholder="Harga (Rp)/KG" onkeyup="formatRupiah(this)" required><br>                    
             </div>
             <div class="form-box">
                 <label id="berat">Hari</label><br>
@@ -93,8 +89,8 @@
                 <input type="text" name="nama_kategori" placeholder="Nama Kategori" required><br>
             </div>
             <div class="form-box">
-                <label id="harga">Harga (Rp) </label><br>
-                <input type="text" name="harga" placeholder="Harga (Rp)" onkeyup="formatRupiah(this)" required><br>                    
+                <label id="harga">Harga (Rp)/KG</label><br>
+                <input type="text" name="harga" placeholder="Harga (Rp)/KG" onkeyup="formatRupiah(this)" required><br>                    
             </div>
             <div class="form-box">
                 <label id="berat">Hari</label><br>
@@ -137,7 +133,7 @@ span.onclick = function() {         //Tutup Popup Tambah dan Reset
     modal.style.display = "none";
 }
 
-//Popup Edit
+//TutupPopup Edit
 var modal2 = document.getElementById("myModalEdit");
 var span2 = document.getElementsByClassName("close")[2];
 span2.onclick = function() {
@@ -161,14 +157,13 @@ tidakHapus.onclick = function() {
     modalHapus.style.display = "none";
 }
 
-//Menutup Notifikasi
+//Tutup Notifikasi
 var clsnotif = document.getElementsByClassName("clsnotif")[0];
 clsnotif.onclick = function() {
   notif.style.display = "none";
 }
 
 //Popup Edit
-
 function openEditPopup(id) {
     var modal = document.getElementById("myModalEdit");
     modal.style.display = "flex";
@@ -203,12 +198,10 @@ function openEditPopup(id) {
 function formatRupiah(input) {
     // Mengambil nilai tanpa karakter non-digit
     let nominal = input.value.replace(/\D/g, '');
-
     // Memastikan nilai yang dimasukkan bukan karakter kosong atau non-digit
     if (nominal !== "") {
         // Menambahkan pemisah ribuan
         nominal = parseInt(nominal, 10).toLocaleString('in-id');
-
         // Menetapkan nilai yang sudah diformat kembali ke input
         input.value = nominal;
     }

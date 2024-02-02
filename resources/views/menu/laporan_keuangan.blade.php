@@ -1,42 +1,36 @@
-@auth
 @extends('component.layout')
 @section('title','Laporan Keuangan - E-Laundry')
 @section('content')
-	<div class="popbox">
-		<table class="table_dt" cellspacing="0" width="100%">
-
-			<thead>
-				<tr>
-					<th>Tanggal</th>
-					<th>Uang Masuk</th>
-				</thead>
-				<tbody>
-					
-					@if(!$dataTransaksi->isEmpty())
-					@foreach($dataTransaksi as $data)
-					<tr>
-					<td>{{ $data->tgl_transaksi }}</td>
-					<td>{{ $data->harga_akhir }}</td>
-					</tr>
-					@endforeach
-					@else
-
-					<td style="text-align:center;font-weight: 350;" colspan="6"><p>Data kosong</p></td>
-					@endif						
-				</tbody>
-
-		</table>
-	</div>
+{{-- Content Start --}}
+{{-- PopBox Start --}}
+<div class="popbox">
+    <table class="table_dt" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Tanggal Transaksi</th>
+                <th>Pemasukan</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(!$dataKeuangan->isEmpty())
+                <?php $no=1; ?>
+                @foreach($dataKeuangan as $data)
+                    <tr>
+                        <td>{{$no}}</td>
+                        <td>{{ $data->tgl_transaksi }}</td>
+                        <td>{{ "Rp" . number_format($data->pemasukan, 0, ',', '.') }}</td>
+                    </tr>
+                    <?php $no++; ?>
+                @endforeach
+                </tr>
+                @else
+                <tr>
+                    <td style="text-align:center;font-weight: 350;" colspan="3">Data tidak tersedia di tabel</td>
+                </tr>
+            @endif
+        </tbody>
+    </table>
+</div>
+{{-- Popbox End --}}
 @endsection
-
-@section('script')
-<!-- script -->
-@endsection
-
-@endauth
-@guest
-@php
-header("Location: " . route('front'));
-exit();
-@endphp
-@endguest

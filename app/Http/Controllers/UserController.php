@@ -22,12 +22,12 @@ class UserController extends Controller
             'confirm_pass'=> 'required|same:password',
         ]);
 
-        $user = new User([
+        User::create([
             'nama' => $request->nama,
             'username' => $request->username,
             'password' => Hash::make($request->password)
         ]);
-        $user->save();
+        
         return redirect()->route('login')->with('success', 'Pendaftaran Berhasil, Silahkan Masuk!');
     }
 
