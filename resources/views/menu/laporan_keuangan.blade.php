@@ -19,7 +19,7 @@
                     <tr>
                         <td>{{$no}}</td>
                         <td>{{ $data->tgl_transaksi }}</td>
-                        <td>{{ "Rp" . number_format($data->pemasukan, 0, ',', '.') }}</td>
+                        <td>{{ "Rp " . number_format($data->pemasukan, 0, ',', '.') }}</td>
                     </tr>
                     <?php $no++; ?>
                 @endforeach
