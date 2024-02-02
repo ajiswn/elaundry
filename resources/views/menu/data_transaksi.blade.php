@@ -131,7 +131,7 @@
             </div>
             <div class="form-box">
                 <label id="berat">Berat (KG)</label><br>
-                <input type="number" name="berat" placeholder="Berat (KG)" autocomplete="off" id="beratEdit" onkeyup="updateHargaTotal()" required><br>
+                <input type="number" name="berat" placeholder="Berat (KG)" autocomplete="off" id="beratEdit" onkeyup="updateHargaTotalEdit()" required><br>
             </div>
             <div class="form-box">
                 <label id="jenis">Kategori</label><br>
@@ -231,7 +231,7 @@ document.getElementById('kategoriSelectEdit').addEventListener('change', functio
         document.getElementById('hargaAkhirEdit').value = formatRupiah(hargaTotal);
 });
 
-function updateHargaTotal() {
+function updateHargaTotalEdit() {
     var beratValue = parseFloat(document.getElementById('beratEdit').value) || 0;
     var hargaInputValue = document.getElementById('hargaEdit').value;
 
