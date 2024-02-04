@@ -303,10 +303,10 @@ function openCetakPopup(id, nama_kategori) {
     var pesanCetak = document.getElementById('pesanCetak');
     pesanCetak.innerHTML = "Apakah Anda yakin akan mencetak data <b>" + nama_kategori + "</b>?";
 
-    modalcetak.style.display = "flex";
+    modalCetak.style.display = "flex";
 
     var cetakLink = document.getElementById('cetakLink');
-    cetakLink.action = '{{ route("data_transaksi.cetak_pdf", ["data_transaksi" => ":id"]) }}'.replace(':id', id);
+    cetakLink.action = '{{ route("transaksi.cetak_pdf", ["id" => ":id"]) }}'.replace(':id', id);
 }
 tidakCetak.onclick = function() {
     modalCetak.style.display = "none";

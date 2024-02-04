@@ -7,6 +7,7 @@ use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\Riwayat_transaksiController;
 use App\Http\Controllers\laporan_keuanganController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\invoiceController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,8 +41,7 @@ Route::middleware('auth')->group(function () {
     
     Route::resource('data_transaksi', TransaksiController::class);
     Route::get('/transaksi/selesai/{id}', [TransaksiController::class, 'selesai'])->name('transaksi.selesai');
-
-    Route::resource('data_transaksi', invoiceController::class);
+    Route::get('/transaksi/cetak_pdf/{id}', [TransaksiController::class, 'cetak_pdf'])->name('transaksi.cetak_pdf');  
     
     Route::resource('riwayat_transaksi', Riwayat_transaksiController::class);
 
