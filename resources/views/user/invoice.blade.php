@@ -115,7 +115,7 @@
 								</td>
 								@foreach($data as $data)
 								<td>
-									{{ $data-> no_transaksi }}}<br/>
+									{{ $data->no_transaksi }}}<br/>
 									{{ $data->tgl_transaksi }}<br/>
 								</td>
 							</tr>
