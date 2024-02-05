@@ -8,6 +8,7 @@ use App\Models\Transaksi;
 use App\Models\Kategori;
 use carbon\carbon;
 use Session;
+use PDF;
 class TransaksiController extends Controller
 {
     public function __construct()
@@ -92,5 +93,11 @@ class TransaksiController extends Controller
 
         Session::flash('success','Selesaikan Data Transaksi Berhasil');
         return redirect('data_transaksi');
+    }
+    public function cetak_pdf(string $id)
+    {
+        $data = Transaksi::find($id);
+        $pdf = PDF::loadView('user.invoice', ['data' => $data]);
+        return $pdf->stream();
     }
 }
