@@ -122,8 +122,8 @@
         </div>
     </div>
     <div class="modal" id="keluar">
-        <div class="keluarku">
-            <p>Anda yakin ingin keluar?</p>
+        <div class="keluarku" style="padding-top: 16px">
+            <p><b>{{ Auth::user()->nama }}</b>,<br>Anda yakin ingin keluar?</p>
             <a href="{{route('logout')}}"><button class="simpan">Ya</button></a>
             <button class="close" id="tidak">Tidak</button>
         </div>
