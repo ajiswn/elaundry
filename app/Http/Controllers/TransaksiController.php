@@ -50,6 +50,7 @@ class TransaksiController extends Controller
             'tgl'           => Carbon::now()->day,
             'bulan'         => Carbon::now()->month,
             'tahun'         => Carbon::now()->year,
+            'tgl_ambil'     => Carbon::now()->addDays($request->hari)->format('d-M-y'), 
         ]);
 
         Session::flash('success','Tambah Data Transaksi Berhasil');
@@ -96,8 +97,8 @@ class TransaksiController extends Controller
     }
     public function cetak_pdf(string $id)
     {
-        $data = Transaksi::find($id);
-        $pdf = PDF::loadView('user.invoice', ['data' => $data]);
+        $data = Transaksi::with('user')->find($id);
+        $pdf = PDF::loadView('menu.cetak', ['data' => $data])->setPaper('a4', 'landscape');
         return $pdf->stream();
     }
 }
