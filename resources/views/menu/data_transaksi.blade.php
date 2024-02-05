@@ -47,10 +47,8 @@
                 <td class="action" style="min-width: 12rem">
                     <a onclick="openEditPopup({{ $data->id }});" title="Edit"><button class="edit"><i class="fa-regular fa-pen-to-square"></i></button></a> 
                     <button title="Hapus" class="btnHapus" onclick="openHapusPopup({{ $data->id }}, '{{ $data->no_transaksi }}');"><i class="fa-regular fa-trash-can"></i></button>
-                    <button title="Selesai" class="btnSelesai" onclick="openSelesaiPopup({{ $data->id }}, '{{ $data->no_transaksi }}');">
-                        <i class="fa-regular fa-square-check"></i>
-                    </button>
-                    <button title="Cetak" class="btnCetak" onclick="openCetakPopup({{ $data->id }}, '{{ $data->no_transaksi }}');"><i class="fa-regular fa-trash-can"></i></button>
+                    <button title="Selesai" class="btnSelesai" onclick="openSelesaiPopup({{ $data->id }}, '{{ $data->no_transaksi }}');"><i class="fa-regular fa-square-check"></i></button>
+                    <button title="Cetak" class="btnCetak" onclick="openCetakPopup({{ $data->id }}, '{{ $data->no_transaksi }}');"><i class="fa-solid fa-print"></i></button>
                 </td>
             </tr>
             <?php $no++; ?>
@@ -179,10 +177,9 @@
 <div class="modal" id="modalCetak">
     <div class="keluarku" style="padding-top: 25px">
         <p id="pesanCetak" style="font-size: 20px;">Anda yakin ingin mencetak data?</p>
-        <form action="" id="cetakLink" method="POST">
-            @csrf @method('get')
-            <button class="simpan" type="submit">Ya</button>
-        </form>
+        <a href="" id="cetakLink" target="_blank">
+            <button class="simpan" type="submit" id="YaCetak">Ya</button>
+        </a>
         <button class="close" id="tidakCetak">Tidak</button>
     </div>
 </div>
@@ -192,10 +189,9 @@
 <div class="modal" id="modalSelesai">
     <div class="keluarku" style="padding-top: 25px">
         <p id="pesanSelesai" style="font-size: 22px;">Apakah transaksi sudah selesai?</p>
-        <form action="" id="selesaiLink" method="POST">
-            @csrf @method('get')
+        <a href="" id="selesaiLink">
             <button class="simpan" type="submit">Ya</button>
-        </form>
+        </a>
         <button class="close" id="tidakSelesai">Tidak</button>
     </div>
 </div>
@@ -281,9 +277,9 @@ var btnHapus = document.getElementsByClassName("btnHapus");
 var modalHapus = document.getElementById("modalHapus");
 var tidakHapus = document.getElementById("tidakHapus");
 
-function openHapusPopup(id, nama_kategori) {
+function openHapusPopup(id, no_transaksi) {
     var pesanHapus = document.getElementById('pesanHapus');
-    pesanHapus.innerHTML = "Apakah Anda yakin akan menghapus data <b>" + nama_kategori + "</b>?";
+    pesanHapus.innerHTML = "Apakah Anda yakin akan menghapus transaksi <b>" + no_transaksi + "</b>?";
 
     modalHapus.style.display = "flex";
 
@@ -299,14 +295,20 @@ var btnCetak = document.getElementsByClassName("btnCetak");
 var modalCetak = document.getElementById("modalCetak");
 var tidakCetak = document.getElementById("tidakCetak");
 
-function openCetakPopup(id, nama_kategori) {
+function openCetakPopup(id, no_transaksi) {
     var pesanCetak = document.getElementById('pesanCetak');
-    pesanCetak.innerHTML = "Apakah Anda yakin akan mencetak data <b>" + nama_kategori + "</b>?";
+    pesanCetak.innerHTML = "Apakah Anda yakin akan mencetak transaksi <b>" + no_transaksi + "</b>?";
 
     modalCetak.style.display = "flex";
 
     var cetakLink = document.getElementById('cetakLink');
-    cetakLink.action = '{{ route("transaksi.cetak_pdf", ["id" => ":id"]) }}'.replace(':id', id);
+    cetakLink.href = '{{ route("transaksi.cetak_pdf", ["id" => ":id"]) }}'.replace(':id', id);
+
+    var YaCetak = document.getElementById('YaCetak');
+    YaCetak.onclick = function() {
+        modalCetak.style.display = "none";
+    }
+    
 }
 tidakCetak.onclick = function() {
     modalCetak.style.display = "none";
@@ -323,7 +325,7 @@ function openSelesaiPopup(id, no_transaksi) {
     modalSelesai.style.display = "flex";
 
     var selesaiLink = document.getElementById('selesaiLink');
-    selesaiLink.action = '{{ route("transaksi.selesai", ["id" => ":id"]) }}'.replace(':id', id);
+    selesaiLink.href = '{{ route("transaksi.selesai", ["id" => ":id"]) }}'.replace(':id', id);
 }
 tidakSelesai.onclick = function() {
     modalSelesai.style.display = "none";
