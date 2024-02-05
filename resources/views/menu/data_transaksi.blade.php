@@ -5,16 +5,16 @@
 {{-- Content Start --}}
 {{-- Notifikasi Start --}}
 @if ($message = Session::get('success'))
-    <div class="notif" id="notif">
-        {{$message}}
-        <button class="clsnotif"><i class="fa-solid fa-xmark"></i></button>
-    </div>
+<div class="notif" id="notif">
+    {{$message}}
+    <button class="clsnotif"><i class="fa-solid fa-xmark"></i></button>
+</div>
 @endif
 {{-- Notifikasi End --}}
 
 {{-- PopBox Start --}}
 <div class="popbox">
-@if(!$kategori->isEmpty())
+    @if(!$kategori->isEmpty())
     <button type="button" id="myBtn" class="tambah">
         <img src="gambar/tambah.svg">
         <p>Tambah</p>   
@@ -34,36 +34,37 @@
         </thead>
         <tbody>
             @if(!$dataTransaksi->isEmpty())
-                <?php $no=1; ?>
-                @foreach($dataTransaksi as $data)
-                    <tr>
-                        <td>{{$no}}</td>
-                        <td>{{ $data->no_transaksi }}</td>
-                        <td>{{ $data->tgl_transaksi }}</td>
-                        <td>{{ $data->customer }}</td>
-                        <td>{{ $data->berat.' KG' }}</td>
-                        <td>{{ $data->nama_kategori }}</td>
-                        <td>{{ "Rp " . number_format($data->harga_akhir, 0, ',', '.') }}</td>
-                        <td class="action" style="min-width: 12rem">
-                            <a onclick="openEditPopup({{ $data->id }});" title="Edit"><button class="edit"><i class="fa-regular fa-pen-to-square"></i></button></a> 
-                            <button title="Hapus" class="btnHapus" onclick="openHapusPopup({{ $data->id }}, '{{ $data->no_transaksi }}');"><i class="fa-regular fa-trash-can"></i></button>
-                            <button title="Selesai" class="btnSelesai" onclick="openSelesaiPopup({{ $data->id }}, '{{ $data->no_transaksi }}');">
-                                <i class="fa-regular fa-square-check"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <?php $no++; ?>
-                @endforeach
-                </tr>
-            @else
-                <tr>
-                    <td style="text-align:center;font-weight: 350;" colspan="8">Data tidak tersedia di tabel</td>
-                </tr>
-            @endif
-        </tbody>
-    </table>
+            <?php $no=1; ?>
+            @foreach($dataTransaksi as $data)
+            <tr>
+                <td>{{$no}}</td>
+                <td>{{ $data->no_transaksi }}</td>
+                <td>{{ $data->tgl_transaksi }}</td>
+                <td>{{ $data->customer }}</td>
+                <td>{{ $data->berat.' KG' }}</td>
+                <td>{{ $data->nama_kategori }}</td>
+                <td>{{ "Rp " . number_format($data->harga_akhir, 0, ',', '.') }}</td>
+                <td class="action" style="min-width: 12rem">
+                    <a onclick="openEditPopup({{ $data->id }});" title="Edit"><button class="edit"><i class="fa-regular fa-pen-to-square"></i></button></a> 
+                    <button title="Hapus" class="btnHapus" onclick="openHapusPopup({{ $data->id }}, '{{ $data->no_transaksi }}');"><i class="fa-regular fa-trash-can"></i></button>
+                    <button title="Selesai" class="btnSelesai" onclick="openSelesaiPopup({{ $data->id }}, '{{ $data->no_transaksi }}');">
+                        <i class="fa-regular fa-square-check"></i>
+                    </button>
+                    <button title="Cetak" class="btnCetak" onclick="openCetakPopup({{ $data->id }}, '{{ $data->no_transaksi }}');"><i class="fa-regular fa-trash-can"></i></button>
+                </td>
+            </tr>
+            <?php $no++; ?>
+            @endforeach
+        </tr>
+        @else
+        <tr>
+            <td style="text-align:center;font-weight: 350;" colspan="8">Data tidak tersedia di tabel</td>
+        </tr>
+        @endif
+    </tbody>
+</table>
 @else
-    <h3 style="text-align: center">Data Kategori masih kosong, silahkan isi di menu <b style="color: #6F6CEC">Kategori</b></h3>
+<h3 style="text-align: center">Data Kategori masih kosong, silahkan isi di menu <b style="color: #6F6CEC">Kategori</b></h3>
 @endif
 </div>
 {{-- Popbox End --}}
@@ -92,7 +93,7 @@
                 <select name="nama_kategori" id="kategoriSelect" required>
                     <option value="" disabled selected hidden>-- Kategori --</option>
                     @foreach($kategori as $data)
-                        <option value="{{$data->nama_kategori}}" data-harga="{{$data->harga}}" data-hari="{{$data->hari}}">{{$data->nama_kategori}}</option>
+                    <option value="{{$data->nama_kategori}}" data-harga="{{$data->harga}}" data-hari="{{$data->hari}}">{{$data->nama_kategori}}</option>
                     @endforeach
                 </select><br>                    
             </div>
@@ -138,7 +139,7 @@
                 <select name="nama_kategori" id="kategoriSelectEdit" required>
                     <option value="" disabled selected hidden>-- Kategori --</option>
                     @foreach($kategori as $data)
-                        <option value="{{$data->nama_kategori}}" data-harga="{{$data->harga}}" data-hari="{{$data->hari}}">{{$data->nama_kategori}}</option>
+                    <option value="{{$data->nama_kategori}}" data-harga="{{$data->harga}}" data-hari="{{$data->hari}}">{{$data->nama_kategori}}</option>
                     @endforeach
                 </select><br>                    
             </div>
@@ -173,7 +174,20 @@
     </div>
 </div>
 <!-- Popup Hapus End -->
-    
+
+<!-- Popup Cetak Start -->
+<div class="modal" id="modalCetak">
+    <div class="keluarku" style="padding-top: 25px">
+        <p id="pesanCetak" style="font-size: 20px;">Anda yakin ingin mencetak data?</p>
+        <form action="" id="cetakLink" method="POST">
+            @csrf @method('get')
+            <button class="simpan" type="submit">Ya</button>
+        </form>
+        <button class="close" id="tidakCetak">Tidak</button>
+    </div>
+</div>
+<!-- Popup Cetak End -->
+
 <!-- Popup Selesai Start -->
 <div class="modal" id="modalSelesai">
     <div class="keluarku" style="padding-top: 25px">
@@ -190,21 +204,21 @@
 @endsection
 
 @section('script')
-	<!-- script -->
+<!-- script -->
 <script>
 //Harga Total Otomatis Form Tambah
 document.getElementById('kategoriSelect').addEventListener('change', function() {
-        var selectedOption = this.options[this.selectedIndex];
+    var selectedOption = this.options[this.selectedIndex];
 
-        var beratValue = parseFloat(document.getElementById('beratInput').value);
-        var hargaValue = selectedOption.getAttribute('data-harga');
-        var hariValue = selectedOption.getAttribute('data-hari');
-        var hargaTotal = beratValue * hargaValue ||0;
+    var beratValue = parseFloat(document.getElementById('beratInput').value);
+    var hargaValue = selectedOption.getAttribute('data-harga');
+    var hariValue = selectedOption.getAttribute('data-hari');
+    var hargaTotal = beratValue * hargaValue ||0;
         // Set nilai otomatis pada input harga
         document.getElementById('hargaInput').value = formatRupiah(hargaValue);
         document.getElementById('hariInput').value = hariValue;
         document.getElementById('hargaAkhir').value = formatRupiah(hargaTotal);
-});
+    });
 
 function updateHargaTotal() {
     var beratValue = parseFloat(document.getElementById('beratInput').value) || 0;
@@ -219,17 +233,17 @@ function updateHargaTotal() {
 
 //Harga Total Otomatis Form Edit
 document.getElementById('kategoriSelectEdit').addEventListener('change', function() {
-        var selectedOption = this.options[this.selectedIndex];
+    var selectedOption = this.options[this.selectedIndex];
 
-        var beratValue = parseFloat(document.getElementById('beratEdit').value);
-        var hargaValue = selectedOption.getAttribute('data-harga');
-        var hariValue = selectedOption.getAttribute('data-hari');
-        var hargaTotal = beratValue * hargaValue ||0;
+    var beratValue = parseFloat(document.getElementById('beratEdit').value);
+    var hargaValue = selectedOption.getAttribute('data-harga');
+    var hariValue = selectedOption.getAttribute('data-hari');
+    var hargaTotal = beratValue * hargaValue ||0;
         // Set nilai otomatis pada input harga
         document.getElementById('hargaEdit').value = formatRupiah(hargaValue);
         document.getElementById('hariEdit').value = hariValue;
         document.getElementById('hargaAkhirEdit').value = formatRupiah(hargaTotal);
-});
+    });
 
 function updateHargaTotalEdit() {
     var beratValue = parseFloat(document.getElementById('beratEdit').value) || 0;
@@ -252,7 +266,7 @@ btn.onclick = function() {          //Tampil Popup
 span.onclick = function() {         //Tutup Popup Tambah dan Reset
     var form = document.querySelector('.ftambah');
     form.reset(); // Reset form sebelum menampilkan
-  modal.style.display = "none";
+    modal.style.display = "none";
 }
 
 //Tutup Popup Edit
@@ -269,7 +283,7 @@ var tidakHapus = document.getElementById("tidakHapus");
 
 function openHapusPopup(id, nama_kategori) {
     var pesanHapus = document.getElementById('pesanHapus');
-    pesanHapus.innerHTML = "Apakah Anda yakin akan menghapus kategori <b>" + nama_kategori + "</b>?";
+    pesanHapus.innerHTML = "Apakah Anda yakin akan menghapus data <b>" + nama_kategori + "</b>?";
 
     modalHapus.style.display = "flex";
 
@@ -278,6 +292,24 @@ function openHapusPopup(id, nama_kategori) {
 }
 tidakHapus.onclick = function() {
     modalHapus.style.display = "none";
+}
+
+//Konfirmasi Cetak
+var btnCetak = document.getElementsByClassName("btnCetak");
+var modalCetak = document.getElementById("modalCetak");
+var tidakCetak = document.getElementById("tidakCetak");
+
+function openCetakPopup(id, nama_kategori) {
+    var pesanCetak = document.getElementById('pesanCetak');
+    pesanCetak.innerHTML = "Apakah Anda yakin akan mencetak data <b>" + nama_kategori + "</b>?";
+
+    modalcetak.style.display = "flex";
+
+    var cetakLink = document.getElementById('cetakLink');
+    cetakLink.action = '{{ route("data_transaksi.cetak_pdf", ["data_transaksi" => ":id"]) }}'.replace(':id', id);
+}
+tidakCetak.onclick = function() {
+    modalCetak.style.display = "none";
 }
 
 //Konfirmasi Selesai
@@ -316,13 +348,13 @@ function openEditPopup(id) {
 
     // Fetch data transaksi yang dipilih untuk diedit
     fetch('/data_transaksi/'+id+'/edit')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Gagal mengambil data dari server');
-            }
-            return response.json();
-        })
-        .then(data => {
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Gagal mengambil data dari server');
+        }
+        return response.json();
+    })
+    .then(data => {
             // Mengisi nilai form dengan data yang diterima
             document.querySelector('.fedit input[name="no_transaksi"]').value = data.no_transaksi;
             document.querySelector('.fedit input[name="customer"]').value = data.customer;
@@ -332,9 +364,9 @@ function openEditPopup(id) {
             document.querySelector('.fedit input[name="hari"]').value = data.hari;
             document.querySelector('.fedit input[name="harga_akhir"]').value = new Intl.NumberFormat('id-ID').format(data.harga_akhir);
         })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+    .catch(error => {
+        console.error('Error:', error);
+    });
 }
 
 //Merubah format harga

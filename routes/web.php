@@ -40,6 +40,8 @@ Route::middleware('auth')->group(function () {
     
     Route::resource('data_transaksi', TransaksiController::class);
     Route::get('/transaksi/selesai/{id}', [TransaksiController::class, 'selesai'])->name('transaksi.selesai');
+
+    Route::resource('data_transaksi', invoiceController::class);
     
     Route::resource('riwayat_transaksi', Riwayat_transaksiController::class);
 
